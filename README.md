@@ -4,7 +4,7 @@
 **Domain:** Artificial Intelligence
 **Duration:** June to July 2024
 
-##Overview of the project
+### Overview of the project
 ### Object Detection 
 
 ### Objective
