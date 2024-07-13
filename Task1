@@ -1,0 +1,67 @@
+/*Object Detection through video*/
+
+import numpy as np
+import cv2
+from ultralytics import YOLO
+import random
+
+# Read class names from file
+my_file = open("C:/Users/RAKSHITHA/OneDrive/Documents/vs code/weights/yolorefpredict.txt", "r")
+data = my_file.read()
+class_list = data.split("\n")
+my_file.close()
+
+# Generate random colors for each class
+detection_colors = []
+for i in range(len(class_list)):
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    detection_colors.append((b, g, r))
+
+# Load the YOLO model
+model = YOLO("C:/Users/RAKSHITHA/OneDrive/Documents/vs code/weights/yolov8x.pt")
+
+# Video capture setu
+cap = cv2.VideoCapture("C:/Users/RAKSHITHA/OneDrive/Documents/vs code/videos/WhatsApp Video 2024-06-13 at 12.10.22 AM.mp4")
+
+if not cap.isOpened():
+    print("Cannot open video file")
+    exit()
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        print("Can't receive frame (stream end?). Exiting....")
+        break
+
+    # Save a temporary frame image for detection
+    temp_img_path = "C:/Users/RAKSHITHA/OneDrive/Documents/vs code/img50.jpg"
+    cv2.imwrite(temp_img_path, frame)
+
+    # Model prediction
+    results = model.predict(source=temp_img_path, conf=0.45, save=False)
+
+    # Ensure results are available and extract necessary data
+    if results:
+        detect_params = results[0].boxes.data.numpy()  # Extract detection data as NumPy array
+        print("Detection Parameters: ", detect_params)
+
+        for param in detect_params:
+            x1, y1, x2, y2, conf, cls = param[:6]
+            x1, y1, x2, y2, cls = map(int, (x1, y1, x2, y2, cls))
+            cv2.rectangle(frame, (x1, y1), (x2, y2), detection_colors[cls], 3)
+            font = cv2.FONT_HERSHEY_COMPLEX
+            label = f"{class_list[cls]} {round(conf, 3)}%"
+            cv2.putText(frame, label, (x1, y1 - 10), font, 1, (255, 255, 255), 2)
+
+    # Display the frame
+    cv2.imshow('objectDetection', frame)
+
+    # Break the loop on 'q' key press
+    if cv2.waitKey(1) == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+
