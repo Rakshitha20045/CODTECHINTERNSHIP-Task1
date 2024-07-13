@@ -1,4 +1,4 @@
-/*Object Detection through video*/
+/*Object Detection through video(yolo8n)*/
 
 import numpy as np
 import cv2
@@ -65,3 +65,11 @@ while True:
 cap.release()
 cv2.destroyAllWindows()
 
+/*Object Detection through image(yolo8n)*/
+
+from ultralytics import YOLO
+import numpy
+model = YOLO("yolov8n.pt","v8")
+detection_output = model.predict(source="C:/Users/RAKSHITHA/OneDrive/Documents/vs code/inferences/images/car image.jpg",conf=0.25, save=True)
+print(detection_output)
+print(detection_output[0].numpy())
