@@ -33,3 +33,4 @@ The primary objective of this project is to implement object detection using the
 
 ### Goal
 This project demonstrates the application of the YOLOv8 model for object detection in both video and image inputs. The key activities include data preparation, model loading, frame processing, object detection, and visualization. The use of modern computer vision and machine learning techniques, coupled with robust libraries like OpenCV and Ultralytics YOLO, enables efficient and effective object detection suitable for various real-time applications.
+![Screenshot 2024-07-13 210042](https://github.com/user-attachments/assets/826b9209-8194-4296-865b-ff0ccb19ec28)
